@@ -4,6 +4,11 @@ $title = "Авторизация";
 $current_page = "login";
 require_once './template/header.php';
 
+if (isset($_SESSION['token'])) {
+	header("Location: index.php");
+	die();
+}
+
 $email = $_POST['email'] ?? null;
 $password = $_POST['password'] ?? null;
 
@@ -27,7 +32,7 @@ if ($email && $password) {
 	unset($_SESSION['error']);
 	unset($_SESSION['old_input']);
 	$token = bin2hex(random_bytes(24));
-	$query = mysqli_helper::get_update_query($token, $res['id']);
+	$query = mysqli_helper::get_update_query('users', "`token`='$token'", 'id', '=', $res['id']);
 	mysqli_query($link, $query);
 	$_SESSION['token'] = $token;
 	header("Location: /index.php");

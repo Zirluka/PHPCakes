@@ -4,12 +4,18 @@ $title = "Регистрация";
 $current_page = "register";
 require_once './template/header.php';
 
+if (isset($_SESSION['token'])) {
+	header("Location: index.php");
+	die();
+}
+
 $email = $_POST['email'] ?? null;
 $login = $_POST['login'] ?? null;
 $name = $_POST['name'] ?? null;
 $password = $_POST['password'] ?? null;
 
 if ($email && $login && $name && $password) {
+	// Ищем по почте
 	$query = mysqli_helper::get_select_query('id', 'users', 'email', '=', "'$email'");
 	$res = mysqli_fetch_assoc(mysqli_query($link, $query));
 	if ($res) {

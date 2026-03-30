@@ -11,7 +11,7 @@ class mysqli_helper
 	}
 
 	public static function get_select_query($columns, $table, $condition, $sign, $expression) {
-		$query = "SELECT $columns FROM $table WHERE $condition$sign$expression";
+		$query = "SELECT $columns FROM $table WHERE $condition $sign $expression";
 		return $query;
 	}
 
@@ -20,8 +20,8 @@ class mysqli_helper
 		return $query;
 	}
 
-	public static function get_update_query($token, $id) {
-		$query = "UPDATE `users` SET `token`='$token' WHERE id=$id";
+	public static function get_update_query($table, $values, $condition, $sign, $expression) {
+		$query = "UPDATE `$table` SET $values WHERE $condition$sign$expression";
 		return $query;
 	}
 
