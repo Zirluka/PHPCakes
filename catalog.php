@@ -8,19 +8,36 @@ $id = $_GET['id'] ?? null;
 
 $ToCart = $_POST['ToCart'] ?? null;
 if ($ToCart) {
-	$_SESSION['cart'][] = $ToCart;
+	if (isset($_SESSION['basket'][$ToCart])) {
+		$_SESSION['basket'][$ToCart] += 1;
+	} else {
+		$_SESSION['basket'][$ToCart] = 1;
+	}
 }
 
 
 if ($id == null) {
 	$page = $_GET['page'] ?? 1;
 	$limit = $page - 1;
-	// Ищем все товары
-	$query = mysqli_helper::get_select_query('*', 'goods', '1', '', '');
-	$count = mysqli_query($link, $query)->num_rows/16+1;
-	$query = mysqli_helper::add_limit($query, $limit * 16, 16);
-	$mysqli_res = mysqli_query($link, $query);
-	$goods_arr = mysqli_helper::get_array($mysqli_res);
+	
+	$filter = $_GET['filter'] ?? null;
+	
+	if (!$filter) {
+		// Ищем все товары
+		$query = mysqli_helper::get_select_query('*', 'goods', '1', '', '');
+		$count = mysqli_query($link, $query)->num_rows/16+1;
+		$query = mysqli_helper::add_limit($query, $limit * 16, 16);
+		$mysqli_res = mysqli_query($link, $query);
+		$goods_arr = mysqli_helper::get_array($mysqli_res);
+	} else {
+		// Ищем все товары
+		$query = mysqli_helper::get_select_query('*', 'goods', 'name', 'LIKE', "'%$filter%'");
+		$count = mysqli_query($link, $query)->num_rows/16+1;
+		$query = mysqli_helper::add_limit($query, $limit * 16, 16);
+		$mysqli_res = mysqli_query($link, $query);
+		$goods_arr = mysqli_helper::get_array($mysqli_res);
+	}
+
 	
 
 ?>
@@ -28,6 +45,10 @@ if ($id == null) {
 <main>
 	<div class="catalog">
 		<h1>Товары</h1>
+		<form method="get">
+			<input type="text" name="filter">
+			<button type="submit">Найти</button>
+		</form>
 		<div class="catalog_wrapper">
 			<?php foreach($goods_arr as $item): ?>
 			<div class="catalog_item">
@@ -40,7 +61,7 @@ if ($id == null) {
 		</div>
 		<div class="pagginator">
 			<?php for($i = 1; $i <= $count; $i++): ?>
-				<a href="catalog.php?page=<?= $i ?>" class="<?php if ($page == $i): ?> active <?php endif; ?>"><?= $i ?></a>
+				<a href="catalog.php?page=<?= $i ?><?php if($filter):?><?= "&filter=$filter" ?> <?php endif; ?>" class="<?php if ($page == $i): ?> active <?php endif; ?>"><?= $i ?></a>
 			<?php endfor; ?>
 		</div>
 	</div>
