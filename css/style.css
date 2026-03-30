@@ -110,6 +110,15 @@ header nav {
 .catalog h1 {
 	text-align: center;
 }
+.catalog form {
+	flex-direction: row;
+	gap: 0;
+	margin: 10px auto;
+}
+.catalog form button {
+	border-radius: 0;
+}
+
 .catalog_wrapper {
 	display: grid;
 	grid-template-columns: repeat(2, 600px);
@@ -199,4 +208,23 @@ p.is-invalid {
 }
 input.is-invalid {
 	border: 1px red solid;
+}
+
+/* basket */
+.basket {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+.bakset_wrapper {
+	margin-top: 20px;
+}
+.bakset_wrapper tr {
+	height: 50px;
+}
+.bakset_wrapper tr td {
+	width: fit-content;
+	border: 1px #000 solid;
+	padding: 10px 15px;
+	text-align: center;
 }
