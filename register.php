@@ -3,19 +3,21 @@
 $title = "Регистрация";
 $current_page = "register";
 require_once './template/header.php';
-
+// Если пользователь уже авторизован, то перекидываем его на index страницу
 if (isset($_SESSION['token'])) {
 	header("Location: index.php");
 	die();
 }
 
+// ловим данные
 $email = $_POST['email'] ?? null;
 $login = $_POST['login'] ?? null;
 $name = $_POST['name'] ?? null;
 $password = $_POST['password'] ?? null;
 
 if ($email && $login && $name && $password) {
-	// Ищем по почте
+	// Если все данные есть, то
+	// Ищем повторы по почте
 	$query = mysqli_helper::get_select_query('id', 'users', 'email', '=', "'$email'");
 	$res = mysqli_fetch_assoc(mysqli_query($link, $query));
 	if ($res) {
@@ -24,12 +26,24 @@ if ($email && $login && $name && $password) {
 		header("Location: register.php");
 		die();
 	}
-
+	// и по логину
+	$query = mysqli_helper::get_select_query('id', 'users', 'login', '=', "'$login'");
+	$res = mysqli_fetch_assoc(mysqli_query($link, $query));
+	if ($res) {
+		$_SESSION['error']['register']['login'] = "Login already taken";
+		$_SESSION['old_input'] = $_POST;
+		header("Location: register.php");
+		die();
+	}
+	// Если ошибок нету, то удаляем все ошибки из сессии
 	unset($_SESSION['error']);
 	unset($_SESSION['old_input']);
+	// Хешируем пароль
 	$password = password_hash($password, PASSWORD_DEFAULT);
+	// Создаём пользователя в бд
 	$query = mysqli_helper::get_insert_query("users", "`email`, `login`, `name`, `password`", "'$email', '$login', '$name', '$password'");
 	mysqli_query($link, $query);
+	// Перекидываем пользователя на страницу входа
 	header("Location: login.php");
 	die();
 }
@@ -39,6 +53,7 @@ if ($email && $login && $name && $password) {
 <main class="auth_page">
 	<form method="post">
 		<label>Email</label>
+		<!-- Проверка на ошибки в классах и value -->
 		<input type="email" name="email" placeholder="email" required
 			class="<?php if($_SESSION['error']['register']['email']): ?> is-invalid <?php endif; ?>"
 				value="<?php echo $_SESSION['old_input']['email'] ?? "" ?>">
@@ -48,7 +63,11 @@ if ($email && $login && $name && $password) {
 
 		<label>Login</label>
 		<input type="text" name="login" placeholder="login" required
+			class="<?php if($_SESSION['error']['register']['login']): ?> is-invalid <?php endif; ?>"
 			value="<?php echo $_SESSION['old_input']['login'] ?? "" ?>">
+		<?php if($_SESSION['error']['register']['login']): ?>
+			<p class="is-invalid"><?= $_SESSION['error']['register']['login'] ?></p>
+		<?php endif ?>
 		
 		<label>Name</label>
 		<input type="text" name="name" placeholder="name" required

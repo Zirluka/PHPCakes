@@ -1,5 +1,5 @@
 <?php
-// Подключаем header.php
+// Подключаем header.php и передаём $title и $current_page
 $title = "О нас";
 $current_page = "about";
 require_once './template/header.php';

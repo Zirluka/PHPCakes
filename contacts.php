@@ -1,5 +1,5 @@
 <?php
-// Подключаем header.php
+// Подключаем header.php и $title и $current_page
 $title = "Контакты";
 $current_page = "contacts";
 require_once './template/header.php';

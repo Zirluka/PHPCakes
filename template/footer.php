@@ -1,3 +1,4 @@
+<!-- Подвал сайта -->
 		<footer>
 			FOOTER
 		</footer>

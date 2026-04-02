@@ -151,6 +151,7 @@ header nav {
 	aspect-ratio: 1/1;
 	object-fit: cover;
 }
+/* Forms */
 form {
 	display: flex;
 	flex-direction: column;
@@ -169,6 +170,8 @@ form button {
 	border-radius: 8px;
 	text-align: center;
 }
+
+/* Pagginator */
 
 .pagginator {
 	display: flex;

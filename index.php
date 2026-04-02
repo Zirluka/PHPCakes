@@ -1,9 +1,9 @@
 <?php
-// Подключаем header.php
+// Подключаем header.php $title и $current_page
 $title = "Главная страница";
 $current_page = "index";
 require_once './template/header.php';
-
+// Если нам прислали Email, то выводим, что успешно подписались на рассылку
 $email = $_POST['email'] ?? null;
 if ($email) {
 	echo '<script>alert("Вы успешно подписались на рассылку!");</script>';
@@ -41,6 +41,7 @@ $employee_array = mysqli_helper::get_array($employee);
 	<section class="discount">
 		<h2>Акционные товары</h2>
 		<div class="grid_wrapper">
+			<!-- Проходимся циклом и выводим последние 4 акционных товара -->
 			<?php for($disc_i = 0; $disc_i < $discount_max; $disc_i++):?>
 			<div class="grid_item">
 				<h3><?= $discount_array[$discount_length - $disc_i]['name'] ?></h3>
@@ -54,6 +55,7 @@ $employee_array = mysqli_helper::get_array($employee);
 	<section class="news">
 		<h2>Последние новости</h2>
 		<div class="grid_wrapper">
+			<!-- Проходимся циклом и выводим последние 4 новости -->
 			<?php for($news_i = 0; $news_i < $news_max; $news_i++): ?>
 			<div class="grid_item">
 				<h3><?= $news_array[$news_length - $news_i]['title'] ?></h3>
@@ -66,6 +68,7 @@ $employee_array = mysqli_helper::get_array($employee);
 	<section class="employees">
 		<h2>Сотрудники</h2>
 		<div class="grid_wrapper">
+			<!-- Выводим всех сотрудников -->
 			<?php foreach($employee_array as $item): ?>
 			<div class="grid_item">
 				<h3><?= $item['name'] ?></h3>
@@ -76,9 +79,10 @@ $employee_array = mysqli_helper::get_array($employee);
 	</section>
 	<section class="senders">
 		<h2>Рассылка</h2>
+		<!-- Форма для подписи на рассылку, отправляем email наверх и обрабатываем -->
 		<form method="post">
 			<label>Email</label>
-			<input type="email" name="email" placeholder="Email">
+			<input type="email" name="email" placeholder="Email" required>
 			<button type="submit">Подписаться на рассылку</button>
 		</form>
 	</section>

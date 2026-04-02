@@ -3,10 +3,11 @@
 $title = "Новости";
 $current_page = "news";
 require_once './template/header.php';
-
+// Ловим id новости
 $id = $_GET['id'] ?? null;
-
+// Если id нет, то показываем все новости, иначе детальную страницу определенной новости
 if ($id == null) {
+	// Пагинация
 	$page = $_GET['page'] ?? 1;
 	$limit = $page - 1;
 	// Ищем все товары
@@ -23,6 +24,7 @@ if ($id == null) {
 	<div class="catalog">
 		<h1>Товары</h1>
 		<div class="catalog_wrapper">
+			<!-- Через цикл выводим все новости -->
 			<?php foreach($news_arr as $item): ?>
 			<div class="catalog_item">
 				<h2><?= $item['title'] ?></h2>
@@ -32,6 +34,7 @@ if ($id == null) {
 			<?php endforeach; ?>
 		</div>
 		<div class="pagginator">
+			<!-- Пагинатор описан в catalog.php -->
 			<?php for($i = 1; $i <= $count; $i++): ?>
 				<a href="news.php?page=<?= $i ?>" class="<?php if ($page == $i): ?> active <?php endif; ?>"><?= $i ?></a>
 			<?php endfor; ?>
@@ -40,11 +43,12 @@ if ($id == null) {
 </main>
 
 <?php } else {
+	// если же это детальная страница, то берем все данные из бд
 	$query = mysqli_helper::get_select_query('*', 'news', 'id', '=', $id);
 	$news = mysqli_fetch_assoc(mysqli_query($link, $query));
 
 ?>
-
+<!-- И выводим их -->
 <main>
 	<h2><?= $news['title'] ?></h2>
 	<h3><?= $news['text'] ?></h3>
