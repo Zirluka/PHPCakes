@@ -6,10 +6,10 @@ include 'mysqli_helper.php';
 session_start();
 
 // Подключаем Базу Данных
-$dbHost = '127.0.0.1';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'cakes';
+$dbHost = 'mysql';
+$dbUser = 'cake_user';
+$dbPass = 'cake_password';
+$dbName = 'phpcakes_db';
 
 $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName) or mysqli_connect_error();
 
