@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    container_name: phpcakes_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: phpcakes_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: phpcakes_db
+      MYSQL_USER: cake_user
+      MYSQL_PASSWORD: cake_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./cakes.sql:/docker-entrypoint-initdb.d/cakes.sql
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
