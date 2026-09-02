@@ -55,8 +55,10 @@ if ($basket) {
 	foreach($basket as $key => $item) {
 		$query = mysqli_helper::get_select_query('*', 'goods', 'id','=',$key);
 		$mysqli_res = mysqli_fetch_assoc(mysqli_query($link, $query));
-		$basket_items[$key] = ['name' => $mysqli_res, 'count' => $item];
+		$basket_items[$key] = ['good' => $mysqli_res, 'count' => $item];
 	}
+} else {
+	$basket_items = [];
 }
 
 ?>
@@ -75,7 +77,7 @@ if ($basket) {
 			<?php foreach($basket_items as $key => $item): ?>
 			<tr>
 				<td><?= $key ?></td>
-				<td><?= $item['name'] ?></td>
+				<td><?= $item['good']['name'] ?></td>
 				<td><?= $item['count'] ?></td>
 				<td>
 					<!-- Форма для добавления шт. товару -->

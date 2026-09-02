@@ -55,17 +55,17 @@ if ($email && $login && $name && $password) {
 		<label>Email</label>
 		<!-- Проверка на ошибки в классах и value -->
 		<input type="email" name="email" placeholder="email" required
-			class="<?php if($_SESSION['error']['register']['email']): ?> is-invalid <?php endif; ?>"
+			class="<?php if(isset($_SESSION['error']['register']['email'])): ?> is-invalid <?php endif; ?>"
 				value="<?php echo $_SESSION['old_input']['email'] ?? "" ?>">
-		<?php if($_SESSION['error']['register']['email']): ?>
+		<?php if(isset($_SESSION['error']['register']['email'])): ?>
 			<p class="is-invalid"><?= $_SESSION['error']['register']['email'] ?></p>
 		<?php endif ?>
 
 		<label>Login</label>
 		<input type="text" name="login" placeholder="login" required
-			class="<?php if($_SESSION['error']['register']['login']): ?> is-invalid <?php endif; ?>"
+			class="<?php if(isset($_SESSION['error']['register']['login'])): ?> is-invalid <?php endif; ?>"
 			value="<?php echo $_SESSION['old_input']['login'] ?? "" ?>">
-		<?php if($_SESSION['error']['register']['login']): ?>
+		<?php if(isset($_SESSION['error']['register']['login'])): ?>
 			<p class="is-invalid"><?= $_SESSION['error']['register']['login'] ?></p>
 		<?php endif ?>
 		

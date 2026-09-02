@@ -53,9 +53,9 @@ if ($email && $password) {
 		<label>Email</label>
 		<!-- Выводим ошибки через классы is-invalid -->
 		<input type="email" name="email" placeholder="email" required
-			class="<?php if($_SESSION['error']['login']['email']): ?> is-invalid <?php endif; ?>"
+			class="<?php if(isset($_SESSION['error']['login']['email'])): ?> is-invalid <?php endif; ?>"
 				value="<?php echo $_SESSION['old_input']['email'] ?? "" ?>">
-		<?php if($_SESSION['error']['login']['email']): ?>
+		<?php if(isset($_SESSION['error']['login']['email'])): ?>
 			<p class="is-invalid"><?= $_SESSION['error']['login']['email'] ?></p>
 		<?php endif ?>
 
